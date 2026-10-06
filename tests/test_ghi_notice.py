@@ -20,6 +20,14 @@ class ClassifyNoticeBodyTests(unittest.TestCase):
         )
         self.assertEqual(classify_notice_body(body), "keep_date")
 
+    def test_identity_number_notice_is_closed(self) -> None:
+        body = (
+            "Thông báo khai số định danh hàng hóa "
+            "Thực hiện Quyết định của Bộ tài chính về việc thí điểm khai số vận đơn. "
+            "Đăng ký số định danh hàng hóa trước khi khai báo tờ khai."
+        )
+        self.assertEqual(classify_notice_body(body), "close_notice")
+
     def test_known_currency_prompt(self) -> None:
         body = "Bạn có muốn sửa tất cả các nguyên tệ của tờ khai không?"
         self.assertEqual(classify_notice_body(body), "yes_prompt")

@@ -678,21 +678,94 @@ def form_has_input_fields(dlg, min_edits: int = 5) -> bool:
     return False
 
 
+_EXPORT_FORM_ID = "frmVNACCS_EDA"
+# Slow PCs paint the EDA window long before its edit boxes exist.
+_EXPORT_FORM_READY_TIMEOUT_SEC = 45.0
+
+
+def should_open_export_again(*, clicked: bool, shell_open: bool) -> bool:
+    """False after an open click, or while the EDA window is already on screen.
+
+    A second "Đăng ký mới tờ khai xuất khẩu" click while that form is still
+    loading crashes ECUS on a slow machine.
+    """
+    return not clicked and not shell_open
+
+
+def export_form_shell(main):
+    """Return the EDA MDI child even while its fields are still loading."""
+    if main is None:
+        return None
+    try:
+        children = list(main.children())
+    except Exception:
+        return None
+    for child in children:
+        class_name = getattr(getattr(child, "element_info", None), "class_name", "") or ""
+        if "MDICLIENT" in class_name:
+            try:
+                nested = list(child.children())
+            except Exception:
+                nested = []
+            for mdi_child in nested:
+                if _is_export_form_shell(mdi_child):
+                    return mdi_child
+        elif _is_export_form_shell(child):
+            return child
+    return None
+
+
+def _is_export_form_shell(ctrl) -> bool:
+    aid = getattr(getattr(ctrl, "element_info", None), "automation_id", "") or ""
+    return aid == _EXPORT_FORM_ID
+
+
+def _wait_for_export_shell(main, timeout: float):
+    """Poll until the EDA window exists. Does not click."""
+    deadline = time.time() + timeout
+    while True:
+        shell = export_form_shell(main)
+        if shell is not None:
+            return shell
+        if time.time() >= deadline:
+            return None
+        time.sleep(0.4)
+
+
+def _export_form_is_ready(dlg) -> bool:
+    if dlg is None:
+        return False
+    if getattr(getattr(dlg, "element_info", None), "automation_id", "") == "frmMain":
+        return False
+    return form_has_input_fields(dlg)
+
+
 def open_export_eda(main) -> None:
-    """Open export EDA form — prefer toolbar, then menu_select (menu_select can be slow on ECUS)."""
+    """Open export EDA once. Never click the menu after a click already landed."""
+    if not should_open_export_again(clicked=False, shell_open=export_form_shell(main) is not None):
+        logger.info("export form is already opening; not clicking Đăng ký mới again")
+        return
+
     main.set_focus()
     time.sleep(0.15)
 
     # Toolbar shortcuts often labeled EDA / show in tooltip.
+    # One click only: a raised click_input often means the click already landed
+    # and the menu popup (or the button) was destroyed while the form loaded.
     for title_re in (r".*\bEDA\b.*", r".*xuất khẩu.*EDA.*", r".*Export.*EDA.*"):
         try:
             btn = find_control(main, title_re=title_re, control_type="Button", timeout=0.6)
-            btn.click_input()
-            logger.info("opened export EDA via toolbar button %s", title_re)
-            time.sleep(1.0)
-            return
         except Exception:
             continue
+        try:
+            btn.click_input()
+            logger.info("opened export EDA via toolbar button %s", title_re)
+        except Exception as exc:
+            # The click often lands, then click_input raises because the UI is busy
+            # opening the form. A menu click here opens EDA a second time.
+            logger.warning("toolbar EDA click raised; not opening the menu as well: %s", exc)
+        time.sleep(0.5)
+        return
 
     click_menu_export_eda(main)
 
@@ -703,34 +776,30 @@ def ensure_export_form_ready(app: Any, main) -> Any:
     # 1. Fast check if export form is already open inside main or top level
     try:
         existing = find_export_form(app, timeout=1.0, main=main)
-        if (
-            existing is not None
-            and getattr(existing.element_info, "automation_id", "") != "frmMain"
-            and form_has_input_fields(existing)
-        ):
+        if _export_form_is_ready(existing):
             logger.info("export form already open and ready")
             return existing
     except Exception:
         pass
 
-    # 2. Open EDA if not open
-    logger.info("Export form not found or has no input fields; attempting to open EDA...")
-    open_export_eda(main)
+    # A slow machine shows frmVNACCS_EDA before the edit boxes exist.
+    # Clicking "Đăng ký mới" again at that point crashes the flow.
+    if export_form_shell(main) is not None:
+        logger.info("export form is still loading; waiting for fields without clicking again")
+    else:
+        logger.info("Export form not found or has no input fields; opening EDA once")
+        open_export_eda(main)
 
-    deadline = time.time() + 25
+    deadline = time.time() + _EXPORT_FORM_READY_TIMEOUT_SEC
     while time.time() < deadline:
         try:
             dlg = find_export_form(app, timeout=2.0, main=main)
-            if (
-                dlg is not None
-                and getattr(dlg.element_info, "automation_id", "") != "frmMain"
-                and form_has_input_fields(dlg)
-            ):
+            if _export_form_is_ready(dlg):
                 logger.info("export form ready after open")
                 return dlg
         except Exception:
             pass
-        time.sleep(0.5)
+        time.sleep(1.0)
     raise EcusUiError(
         "Form tờ khai xuất khẩu chưa hiện ô nhập liệu. "
         "Mở thủ công: Tờ khai hải quan → Đăng ký mới tờ khai xuất khẩu (EDA), "
@@ -838,10 +907,61 @@ def dismiss_blocking_dialogs(main=None) -> None:
             break
 
 
+def _click_export_eda_dropdown(main) -> bool:
+    """Click the open-EDA menu item. True means a click was sent.
+
+    click_input often raises after the click because the dropdown closes while
+    the form starts loading. That must not be treated as "click missed".
+    """
+    import ctypes
+    from ctypes import wintypes
+
+    from pywinauto import Application
+
+    user32 = ctypes.windll.user32
+    pid = getattr(main.element_info, "process_id", None)
+    drop_hwnds: list[int] = []
+
+    def _cb(hwnd, _lparam):
+        proc = wintypes.DWORD()
+        user32.GetWindowThreadProcessId(hwnd, ctypes.byref(proc))
+        if (pid is None or proc.value == pid) and user32.IsWindowVisible(hwnd) and user32.GetWindowTextLengthW(hwnd) == 0:
+            cls_buf = ctypes.create_unicode_buffer(256)
+            user32.GetClassNameW(hwnd, cls_buf, 256)
+            if "WindowsForms10.Window" in cls_buf.value:
+                drop_hwnds.append(hwnd)
+        return True
+
+    user32.EnumDesktopWindows(0, ctypes.WINFUNCTYPE(ctypes.c_bool, wintypes.HWND, wintypes.LPARAM)(_cb), 0)
+    for hwnd in drop_hwnds:
+        try:
+            popup = Application(backend="uia").connect(handle=hwnd).window(handle=hwnd)
+            for item in popup.children():
+                label = item.window_text() or ""
+                if "EDA" not in label and MENU_EXPORT_EDA not in label:
+                    continue
+                try:
+                    item.click_input()
+                    logger.info("clicked export EDA via dropdown popup")
+                except Exception as exc:
+                    logger.warning(
+                        "dropdown EDA click raised; not opening the form again: %s",
+                        exc,
+                    )
+                return True
+        except Exception:
+            continue
+    return False
+
+
 def click_menu_export_eda(main) -> None:
     main.set_focus()
     time.sleep(0.2)
+    if not should_open_export_again(clicked=False, shell_open=export_form_shell(main) is not None):
+        logger.info("export form is already opening; not clicking the EDA menu")
+        return
 
+    clicked = False
     # 1. Look for 'Tờ khai hải quan' menu item on MenuStrip1
     try:
         customs = find_control(
@@ -852,57 +972,42 @@ def click_menu_export_eda(main) -> None:
         )
         customs.click_input()
         time.sleep(0.4)
-
-        # Search dropdown popup window for EDA
-        try:
-            import ctypes
-            from ctypes import wintypes
-            user32 = ctypes.windll.user32
-            from pywinauto import Application
-
-            pid = getattr(main.element_info, "process_id", None)
-            drop_hwnds = []
-
-            def _cb(hwnd, _lparam):
-                p = wintypes.DWORD()
-                user32.GetWindowThreadProcessId(hwnd, ctypes.byref(p))
-                if (pid is None or p.value == pid) and user32.IsWindowVisible(hwnd) and user32.GetWindowTextLengthW(hwnd) == 0:
-                    cls_buf = ctypes.create_unicode_buffer(256)
-                    user32.GetClassNameW(hwnd, cls_buf, 256)
-                    if "WindowsForms10.Window" in cls_buf.value:
-                        drop_hwnds.append(hwnd)
-                return True
-
-            user32.EnumDesktopWindows(0, ctypes.WINFUNCTYPE(ctypes.c_bool, wintypes.HWND, wintypes.LPARAM)(_cb), 0)
-            for h in drop_hwnds:
-                try:
-                    w = Application(backend="uia").connect(handle=h).window(handle=h)
-                    for item in w.children():
-                        if "EDA" in item.window_text():
-                            item.click_input()
-                            logger.info("clicked export EDA via dropdown popup")
-                            time.sleep(1.0)
-                            return
-                except Exception:
-                    continue
-        except Exception as exc:
-            logger.debug("dropdown click failed: %s", exc)
+        clicked = _click_export_eda_dropdown(main)
     except Exception as exc:
         logger.debug("customs menu click failed: %s", exc)
 
-    # Fallback to menu_select
+    if not should_open_export_again(
+        clicked=clicked,
+        shell_open=export_form_shell(main) is not None,
+    ):
+        logger.info("EDA open already started; skipping menu_select")
+        time.sleep(0.5)
+        return
+
+    # Fallback only when the EDA item was never clicked. After each attempt, wait
+    # for the form window before trying another path — menu_select can click and
+    # then raise while the form is still loading.
     for path in (
         f"{MENU_CUSTOMS}->{MENU_EXPORT_EDA}",
         "Tờ khai hải quan->Đăng ký mới tờ khai xuất khẩu (EDA)",
         "Tờ khai hải quan->Đăng ký mới tờ khai xuất khẩu",
     ):
+        if not should_open_export_again(
+            clicked=clicked,
+            shell_open=export_form_shell(main) is not None,
+        ):
+            logger.info("export form is opening; not selecting %s", path)
+            return
         try:
             main.menu_select(path)
             logger.info("menu_select ok: %s", path)
-            time.sleep(1.0)
+            time.sleep(0.5)
             return
-        except Exception:
-            pass
+        except Exception as exc:
+            logger.debug("menu_select %s failed: %s", path, exc)
+            if _wait_for_export_shell(main, 8.0) is not None:
+                logger.info("export form opening after menu_select; not trying another path")
+                return
 
     raise EcusUiError("Failed to open export EDA menu.")
 

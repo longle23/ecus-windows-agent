@@ -29,6 +29,10 @@ _KEEP_DEPARTURE_DATE_RE = re.compile(
     r"ngày\s*hàng\s*đi.{0,80}nhỏ\s*hơn|ngay\s*hang\s*di.{0,80}nho\s*hon",
     re.IGNORECASE | re.DOTALL,
 )
+_IDENTITY_NOTICE_RE = re.compile(
+    r"số\s*định\s*danh|so\s*dinh\s*danh",
+    re.IGNORECASE,
+)
 _NOTICE_TITLE_RE = re.compile(r"thông\s*báo|warning|confirm|xác\s*nhận", re.IGNORECASE)
 
 
@@ -37,6 +41,7 @@ def classify_notice_body(body: str, *, blocking: bool = False) -> str:
 
     saved: success notice. yes_prompt: known confirmation such as nguyên tệ.
     keep_date: departure date is before today; click No and keep waiting for Đã ghi xong.
+    close_notice: goods-identity notice; click Đóng and keep waiting for Đã ghi xong.
     unsaved: discard prompt after Đóng. error: a message that must stop the wait.
     pending: a notice whose text has not appeared yet.
     """
@@ -47,6 +52,8 @@ def classify_notice_body(body: str, *, blocking: bool = False) -> str:
         return "unsaved"
     if _KEEP_DEPARTURE_DATE_RE.search(text):
         return "keep_date"
+    if _IDENTITY_NOTICE_RE.search(text):
+        return "close_notice"
     if not blocking and _KNOWN_YES_RE.search(text):
         return "yes_prompt"
     if blocking:
@@ -610,6 +617,18 @@ class PywinautoEcusRpa:
                     logger.warning("departure-date prompt has no No button")
                 time.sleep(0.25)
                 continue
+            if kind == "close_notice" and win is not None:
+                if self._click_dialog_button(
+                    win,
+                    auto_ids={"btnDong", "cmdDong", "btnClose", "cmdClose"},
+                    names={"đóng", "dong"},
+                ):
+                    logger.info("clicked Đóng on identity-number notice; waiting for 'Đã ghi xong'")
+                    deadline = max(deadline, time.time() + 5.0)
+                else:
+                    logger.warning("identity-number notice has no Đóng button")
+                time.sleep(0.25)
+                continue
             if kind == "error":
                 detail = text or "unexpected dialog after Ghi"
                 raise EcusFlowError(
@@ -628,7 +647,7 @@ class PywinautoEcusRpa:
         )
 
     def _inspect_ghi_dialogs(self):
-        """Return the highest-priority popup: saved, keep_date, error, unsaved, then yes_prompt."""
+        """Return the highest-priority popup: saved, keep_date, error, close_notice, unsaved, then yes_prompt."""
         found: dict[str, tuple] = {}
         for win, title, body, blocking in self._iter_notice_windows():
             kind = classify_notice_body(body, blocking=blocking)
@@ -636,7 +655,7 @@ class PywinautoEcusRpa:
                 continue
             snippet = " ".join((body or title).split())[:240]
             found[kind] = (win, snippet)
-        for kind in ("saved", "keep_date", "error", "unsaved", "yes_prompt"):
+        for kind in ("saved", "keep_date", "error", "close_notice", "unsaved", "yes_prompt"):
             if kind in found:
                 win, snippet = found[kind]
                 return kind, win, snippet
@@ -795,7 +814,7 @@ class PywinautoEcusRpa:
     def _click_dialog_button(self, win, *, auto_ids: set[str], names: set[str]) -> bool:
         for btn in self._dialog_buttons(win):
             aid = getattr(btn.element_info, "automation_id", "") or ""
-            txt = (btn.window_text() or "").strip().lower()
+            txt = (btn.window_text() or "").replace("&", "").strip().lower()
             if aid in auto_ids or txt in names or any(txt.startswith(name + " ") for name in names):
                 btn.click_input()
                 return True
