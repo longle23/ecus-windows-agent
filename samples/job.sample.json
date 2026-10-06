@@ -1,0 +1,135 @@
+{
+  "sendId": "ecus-send-local-test",
+  "jobId": "ecus-send-local-test-001",
+  "jobIndex": 1,
+  "jobTotal": 1,
+  "action": "register_declaration",
+  "userId": "local-dev",
+  "userName": "Local Dev",
+  "department": "Forwarding",
+  "request_ids": ["REQ-TEST-001"],
+  "thong_tin_chung": {
+    "tieu_de": "THÔNG TIN CHUNG",
+    "thong_tin_to_khai": {
+      "nhom_loai_hinh": "Kinh doanh, đầu tư",
+      "so_to_khai": "",
+      "stt": "",
+      "so_to_khai_dau_tien": "",
+      "ma_loai_hinh": "B11 - Xuất kinh doanh",
+      "co_quan_hai_quan": "47NF",
+      "ten_co_quan_hai_quan": "Hải quan Thống Nhất",
+      "ma_bo_phan_xu_ly_to_khai": "00",
+      "ma_hieu_phuong_thuc_van_chuyen": "3",
+      "ngay_khai_bao_du_kien": "",
+      "ngay_dang_ky": ""
+    },
+    "nguoi_xuat_khau": {
+      "ma": "3603076036",
+      "ten": "CÔNG TY TNHH MEN-CHUEN VIỆT NAM",
+      "ma_buu_chinh": "+84",
+      "dia_chi": "Đường số 2, KCN Giang Điền, Xã An Viễn, Thành phố Đồng Nai, Việt Nam",
+      "dien_thoai": "02518966868"
+    },
+    "nguoi_uy_thac_xuat_khau": { "ma": "", "ten": "" },
+    "nguoi_nhap_khau": {
+      "ma": "",
+      "ten": "SPORTS CITY INTERNATIONAL INC.",
+      "ma_buu_chinh": "",
+      "dia_chi": "11F., NO.585, RUIGUANG RD., NEIHU DIST., TAIPEI CITY, TAIWAN",
+      "ma_nuoc": "KH",
+      "ten_nuoc": "CAMBODIA",
+      "ma_nguoi_khai_hai_quan": ""
+    },
+    "van_don": {
+      "so_van_don": "122600044830159",
+      "so_luong_kien": "22 RO",
+      "tong_trong_luong_hang_gross": "196.58 KGM",
+      "dia_diem_luu_kho_ma": "47NFCNF",
+      "dia_diem_luu_kho_ten": "CCHQ THONG NHAT DN",
+      "dia_diem_luu_kho_hang_cho_thong_quan_du_kien": "47NFCNF - CCHQ THONG NHAT DN",
+      "dia_diem_nhan_hang_ma": "KHPNH",
+      "dia_diem_nhan_hang_ten": "PHNOMPENH",
+      "dia_diem_nhan_hang_cuoi_cung": "KHPNH - PHNOMPENH",
+      "dia_diem_xep_hang_ma": "47NFCNF",
+      "dia_diem_xep_hang_ten": "CCHQ THONG NHAT DN",
+      "dia_diem_xep_hang": "47NFCNF - CCHQ THONG NHAT DN",
+      "phuong_tien_van_chuyen_ma": "",
+      "phuong_tien_van_chuyen_ten": "XE TAI",
+      "phuong_tien_van_chuyen_du_kien": "XE TAI",
+      "ngay_hang_di_du_kien": "29/07/2026",
+      "ky_hieu_va_so_hieu": ""
+    },
+    "hop_dong": {
+      "so_hop_dong": "MDSVN-SCI-ST/HDMB/2026",
+      "ngay_hop_dong": "01/01/2026",
+      "ngay_het_han": ""
+    },
+    "hoa_don": {
+      "phan_loai_hinh_thuc_hoa_don": "A",
+      "so_hoa_don": "MCVB-071626-12",
+      "ngay_phat_hanh": "25/07/2026",
+      "phuong_thuc_thanh_toan": "KC",
+      "ma_phan_loai_gia_hoa_don": "A",
+      "dieu_kien_gia_hoa_don": "EXW",
+      "tong_tri_gia_hoa_don": "1000",
+      "tri_gia_tinh_thue": "1000",
+      "ma_dong_tien_cua_hoa_don": "USD",
+      "ma_dong_tien_tri_gia_tinh_thue": "USD",
+      "tong_he_so_phan_bo_tri_gia_tinh_thue": ""
+    },
+    "van_chuyen": {
+      "ngay_khoi_hanh_van_chuyen": "27/07/2026",
+      "dia_diem_dich_cho_van_chuyen_bao_thue_ma": "KHPNH",
+      "dia_diem_dich_cho_van_chuyen_bao_thue_ten": "PHNOMPENH",
+      "dia_diem_dich_cho_van_chuyen_bao_thue": "KHPNH - PHNOMPENH",
+      "ngay_den_ngay_khoi_hanh_bao_thue": "27/07/2026"
+    },
+    "thong_tin_khac": {
+      "phan_ghi_chu": "CNEE:SPORTEX INDUSTRY CO., LTD.",
+      "so_quan_ly_cua_noi_bo_doanh_nghiep": "",
+      "so_quan_ly_nguoi_su_dung": "",
+      "tong_so_trang_cua_to_khai": "1",
+      "tong_so_dong_hang_cua_to_khai": 1
+    }
+  },
+  "thong_tin_container": {
+    "tieu_de": "THÔNG TIN CONTAINER",
+    "dia_diem_xep_hang_len_xe_cho_hang": {
+      "ma_1": "47NFCNF",
+      "ma_2": "",
+      "ma_3": "",
+      "ma_4": "",
+      "ma_5": "",
+      "ten": "CCHQ THONG NHAT DN",
+      "dia_chi": ""
+    },
+    "so_container_1_50": "TCLU1234567"
+  },
+  "danh_sach_hang": {
+    "tieu_de": "DANH SÁCH HÀNG",
+    "hang_hoa": [
+      {
+        "stt": 1,
+        "ma_hang": "SP001",
+        "ten_hang": "TEST PRODUCT FABRIC",
+        "ma_hs": "39269099",
+        "xuat_xu": "VIETNAM",
+        "so_luong_1": 100,
+        "don_vi_tinh_1": "PCE",
+        "so_luong_2": "",
+        "don_vi_tinh_2": "",
+        "don_gia": 10,
+        "ma_nguyen_te_don_gia": "USD",
+        "don_vi_tinh_don_gia": "PCE",
+        "tri_gia_hoa_don": 1000,
+        "tri_gia_tinh_thue": 1000,
+        "ma_nguyen_te_tri_gia_tinh_thue": "USD"
+      }
+    ],
+    "tong_cong": {
+      "so_luong_1": 100,
+      "tri_gia_hoa_don": 1000,
+      "tri_gia_tinh_thue": 1000
+    }
+  }
+}

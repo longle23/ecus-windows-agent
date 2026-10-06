@@ -1,0 +1,140 @@
+{
+  "sendId": "ecus-live-test",
+  "jobId": "ECUS-EXP-20260924-001",
+  "jobIndex": 1,
+  "jobTotal": 1,
+  "action": "register_declaration",
+  "userId": "stg-operator",
+  "userName": "STG Operator",
+  "department": "Customs Forwarding",
+  "request_ids": ["REQ-EXP-9901"],
+  "thong_tin_chung": {
+    "tieu_de": "THÔNG TIN CHUNG",
+    "thong_tin_to_khai": {
+      "nhom_loai_hinh": "Kinh doanh, đầu tư",
+      "so_to_khai": "",
+      "stt": "",
+      "so_to_khai_dau_tien": "",
+      "ma_loai_hinh": "B11 - Xuất kinh doanh",
+      "co_quan_hai_quan": "47NF - Hải quan Thống Nhất",
+      "ten_co_quan_hai_quan": "Hải quan Thống Nhất",
+      "ma_bo_phan_xu_ly_to_khai": "00",
+      "ma_hieu_phuong_thuc_van_chuyen": "3",
+      "ngay_khai_bao_du_kien": "",
+      "ngay_dang_ky": ""
+    },
+    "nguoi_xuat_khau": {
+      "ma": "3603076036",
+      "ten": "CÔNG TY TNHH MEN-CHUEN VIỆT NAM",
+      "ma_buu_chinh": "+84",
+      "dia_chi": "Đường số 2, KCN Giang Điền, Xã An Viễn, Thành phố Đồng Nai, Việt Nam",
+      "dien_thoai": "02518966868"
+    },
+    "nguoi_uy_thac_xuat_khau": { "ma": "", "ten": "" },
+    "nguoi_nhap_khau": {
+      "ma": "",
+      "ten": "SPORTS CITY INTERNATIONAL INC.",
+      "ma_buu_chinh": "",
+      "dia_chi": "11F., NO.585, RUIGUANG RD., NEIHU DIST., TAIPEI CITY, TAIWAN",
+      "ma_nuoc": "TW",
+      "ten_nuoc": "TAIWAN",
+      "ma_nguoi_khai_hai_quan": ""
+    },
+    "van_don": {
+      "so_van_don": "BL2026092401",
+      "so_luong_kien": "150 CTN",
+      "tong_trong_luong_hang_gross": "2450.50 KGM",
+      "dia_diem_luu_kho_ma": "47NFCNF",
+      "dia_diem_luu_kho_ten": "CCHQ THONG NHAT DN",
+      "dia_diem_luu_kho_hang_cho_thong_quan_du_kien": "47NFCNF - CCHQ THONG NHAT DN",
+      "dia_diem_nhan_hang_ma": "KHPNH",
+      "dia_diem_nhan_hang_ten": "PHNOMPENH",
+      "dia_diem_nhan_hang_cuoi_cung": "KHPNH - PHNOMPENH",
+      "dia_diem_xep_hang_ma": "47NFCNF",
+      "dia_diem_xep_hang_ten": "CCHQ THONG NHAT DN",
+      "dia_diem_xep_hang": "47NFCNF - CCHQ THONG NHAT DN",
+      "phuong_tien_van_chuyen_ma": "",
+      "phuong_tien_van_chuyen_ten": "XE TAI 51C-12345",
+      "phuong_tien_van_chuyen_du_kien": "XE TAI 51C-12345",
+      "ngay_hang_di_du_kien": "28/09/2026",
+      "ky_hieu_va_so_hieu": ""
+    },
+    "hop_dong": {
+      "so_hop_dong": "HD-SC-2026/09",
+      "ngay_hop_dong": "15/09/2026",
+      "ngay_het_han": ""
+    },
+    "hoa_don": {
+      "phan_loai_hinh_thuc_hoa_don": "B",
+      "so_hoa_don": "INV-2026-9988",
+      "ngay_phat_hanh": "20/09/2026",
+      "phuong_thuc_thanh_toan": "TTR",
+      "ma_phan_loai_gia_hoa_don": "A",
+      "dieu_kien_gia_hoa_don": "FOB",
+      "tong_tri_gia_hoa_don": "12500",
+      "ma_dong_tien_cua_hoa_don": "USD",
+      "ma_dong_tien_tri_gia_tinh_thue": "USD",
+      "tri_gia_tinh_thue": "12500"
+    },
+    "thong_tin_thue": {
+      "ma_xac_dinh_thoi_han_nop_thue": "",
+      "ma_ngan_hang_tra_thue_thay": "",
+      "nam_phat_hanh_han_muc": "",
+      "ky_hieu_chung_tu_han_muc": "",
+      "so_chung_tu_han_muc": "",
+      "ma_ngan_hang_bao_lanh": "",
+      "nam_phat_hanh_bao_lanh": "",
+      "ky_hieu_chung_tu_bao_lanh": "",
+      "so_chung_tu_bao_lanh": ""
+    },
+    "van_chuyen": {
+      "ngay_khoi_hanh_van_chuyen": "28/09/2026",
+      "dia_diem_dich_cho_van_chuyen_bao_thue_ma": "29CCS08",
+      "dia_diem_dich_cho_van_chuyen_bao_thue": "29CCS08 - KHO XANG NGHI HUONG",
+      "ngay_den_ngay_khoi_hanh_bao_thue": "28/09/2026"
+    },
+    "thong_tin_khac": {
+      "phan_ghi_chu": "HANG XUAT KHAU THEO HOP DONG HD-SC-2026/09",
+      "so_quan_ly_cua_noi_bo_doanh_nghiep": ""
+    }
+  },
+  "thong_tin_container": {
+    "tieu_de": "THÔNG TIN CONTAINER",
+    "dia_diem_xep_hang_len_xe_cho_hang": {
+      "ma_1": "47NFCNF"
+    },
+    "so_container_1_50": "TCLU1234567, TEMU7654321"
+  },
+  "danh_sach_hang": {
+    "tieu_de": "DANH SÁCH HÀNG",
+    "tong_so_dong_hang": 2,
+    "hang_hoa": [
+      {
+        "stt": 1,
+        "ma_hang": "SP001",
+        "ten_hang": "Ao thun cotton nam xuat khau",
+        "ma_hs": "61091010",
+        "xuat_xu": "VN",
+        "so_luong_1": "500",
+        "don_vi_tinh_1": "PCE",
+        "so_luong_2": "",
+        "don_vi_tinh_2": "",
+        "don_gia": "15.00",
+        "tri_gia_hoa_don": "7500.00"
+      },
+      {
+        "stt": 2,
+        "ma_hang": "SP002",
+        "ten_hang": "Quan short the thao polyester",
+        "ma_hs": "62034300",
+        "xuat_xu": "VN",
+        "so_luong_1": "500",
+        "don_vi_tinh_1": "PCE",
+        "so_luong_2": "",
+        "don_vi_tinh_2": "",
+        "don_gia": "10.00",
+        "tri_gia_hoa_don": "5000.00"
+      }
+    ]
+  }
+}

@@ -1,0 +1,196 @@
+Title: OCR_RUN
+Message: Giả lập OCR: 
+StackTrace: URL: http://ecus.vn/TSDCloudService/
+AppVer: 6.0.256
+AppDate: 26/08/2026
+Date/Time: 09-09-2026 02:32:57 AM
+================================================
+Title: ProxyWebservice
+Message: Kiểm tra thông tin Proxy
+StackTrace: URL: http://ecus.vn/EcusService/WebService.asmx
+AppVer: 6.0.256
+AppDate: 26/08/2026
+Date/Time: 09-09-2026 02:33:03 AM
+================================================
+Title: ProxyWebservice
+Message: 6. Hoàn thành thông tin Proxy
+StackTrace: 
+AppVer: 6.0.256
+AppDate: 26/08/2026
+Date/Time: 09-09-2026 02:33:03 AM
+================================================
+Title: ProxyWebservice
+Message: Kiểm tra thông tin Proxy
+StackTrace: URL: http://ecus.vn/EcusService/WebService.asmx
+AppVer: 6.0.256
+AppDate: 26/08/2026
+Date/Time: 09-09-2026 02:33:44 AM
+================================================
+Title: ProxyWebservice
+Message: 6. Hoàn thành thông tin Proxy
+StackTrace: 
+AppVer: 6.0.256
+AppDate: 26/08/2026
+Date/Time: 09-09-2026 02:33:44 AM
+================================================
+Title: ProxyWebservice
+Message: Kiểm tra thông tin Proxy
+StackTrace: URL: http://ecus.vn/EcusService/WebService.asmx
+AppVer: 6.0.256
+AppDate: 26/08/2026
+Date/Time: 09-09-2026 02:33:57 AM
+================================================
+Title: ProxyWebservice
+Message: 6. Hoàn thành thông tin Proxy
+StackTrace: 
+AppVer: 6.0.256
+AppDate: 26/08/2026
+Date/Time: 09-09-2026 02:33:57 AM
+================================================
+Title: KhoiTaoWS_DanhGiaHP
+Message: Object reference not set to an instance of an object.
+StackTrace:    at TSD.ECUSKDNET.frmMain.KhoiTaoWS_DanhGiaHP()
+AppVer: 6.0.256
+AppDate: 26/08/2026
+Date/Time: 09-09-2026 02:37:55 AM
+================================================
+Title: checkService_OneMonth
+Message: 0.Bắt đầu kiểm tra dịch vụ
+StackTrace: 
+AppVer: 6.0.256
+AppDate: 26/08/2026
+Date/Time: 9/9/2026 2:38:00 AM
+================================================
+Title: OCR_RUN
+Message: Giả lập OCR: 
+StackTrace: URL: http://ecus.vn/TSDCloudService/
+AppVer: 6.0.256
+AppDate: 26/08/2026
+Date/Time: 09-09-2026 02:51:44 AM
+================================================
+Title: ProxyWebservice
+Message: Kiểm tra thông tin Proxy
+StackTrace: URL: http://ecus.vn/EcusService/WebService.asmx
+AppVer: 6.0.256
+AppDate: 26/08/2026
+Date/Time: 09-09-2026 02:51:51 AM
+================================================
+Title: ProxyWebservice
+Message: 6. Hoàn thành thông tin Proxy
+StackTrace: 
+AppVer: 6.0.256
+AppDate: 26/08/2026
+Date/Time: 09-09-2026 02:51:51 AM
+================================================
+Title: ProxyWebservice
+Message: Kiểm tra thông tin Proxy
+StackTrace: URL: http://ecus.vn/EcusService/WebService.asmx
+AppVer: 6.0.256
+AppDate: 26/08/2026
+Date/Time: 09-09-2026 02:52:22 AM
+================================================
+Title: ProxyWebservice
+Message: 6. Hoàn thành thông tin Proxy
+StackTrace: 
+AppVer: 6.0.256
+AppDate: 26/08/2026
+Date/Time: 09-09-2026 02:52:22 AM
+================================================
+Title: ProxyWebservice
+Message: Kiểm tra thông tin Proxy
+StackTrace: URL: http://ecus.vn/EcusService/WebService.asmx
+AppVer: 6.0.256
+AppDate: 26/08/2026
+Date/Time: 09-09-2026 02:53:11 AM
+================================================
+Title: ProxyWebservice
+Message: 6. Hoàn thành thông tin Proxy
+StackTrace: 
+AppVer: 6.0.256
+AppDate: 26/08/2026
+Date/Time: 09-09-2026 02:53:11 AM
+================================================
+Title: OCR_RUN
+Message: Giả lập OCR: 
+StackTrace: URL: http://ecus.vn/TSDCloudService/
+AppVer: 6.0.256
+AppDate: 26/08/2026
+Date/Time: 09-09-2026 02:54:55 AM
+================================================
+Title: ProxyWebservice
+Message: Kiểm tra thông tin Proxy
+StackTrace: URL: http://ecus.vn/EcusService/WebService.asmx
+AppVer: 6.0.256
+AppDate: 26/08/2026
+Date/Time: 09-09-2026 02:55:18 AM
+================================================
+Title: ProxyWebservice
+Message: 6. Hoàn thành thông tin Proxy
+StackTrace: 
+AppVer: 6.0.256
+AppDate: 26/08/2026
+Date/Time: 09-09-2026 02:55:18 AM
+================================================
+Title: OCR_RUN
+Message: Giả lập OCR: 
+StackTrace: URL: http://ecus.vn/TSDCloudService/
+AppVer: 6.0.256
+AppDate: 26/08/2026
+Date/Time: 09-09-2026 02:57:21 AM
+================================================
+Title: ProxyWebservice
+Message: Kiểm tra thông tin Proxy
+StackTrace: URL: http://ecus.vn/EcusService/WebService.asmx
+AppVer: 6.0.256
+AppDate: 26/08/2026
+Date/Time: 09-09-2026 02:57:34 AM
+================================================
+Title: ProxyWebservice
+Message: 6. Hoàn thành thông tin Proxy
+StackTrace: 
+AppVer: 6.0.256
+AppDate: 26/08/2026
+Date/Time: 09-09-2026 02:57:34 AM
+================================================
+Title: OCR_RUN
+Message: Giả lập OCR: 
+StackTrace: URL: http://ecus.vn/TSDCloudService/
+AppVer: 6.0.256
+AppDate: 26/08/2026
+Date/Time: 09-09-2026 02:58:23 AM
+================================================
+Title: OCR_RUN
+Message: Giả lập OCR: 
+StackTrace: URL: http://ecus.vn/TSDCloudService/
+AppVer: 6.0.256
+AppDate: 26/08/2026
+Date/Time: 09-09-2026 02:58:41 AM
+================================================
+Title: ProxyWebservice
+Message: Kiểm tra thông tin Proxy
+StackTrace: URL: http://ecus.vn/EcusService/WebService.asmx
+AppVer: 6.0.256
+AppDate: 26/08/2026
+Date/Time: 09-09-2026 02:59:18 AM
+================================================
+Title: ProxyWebservice
+Message: 6. Hoàn thành thông tin Proxy
+StackTrace: 
+AppVer: 6.0.256
+AppDate: 26/08/2026
+Date/Time: 09-09-2026 02:59:18 AM
+================================================
+Title: ProxyWebservice
+Message: Kiểm tra thông tin Proxy
+StackTrace: URL: http://ecus.vn/EcusService/WebService.asmx
+AppVer: 6.0.256
+AppDate: 26/08/2026
+Date/Time: 09-09-2026 03:00:12 AM
+================================================
+Title: ProxyWebservice
+Message: 6. Hoàn thành thông tin Proxy
+StackTrace: 
+AppVer: 6.0.256
+AppDate: 26/08/2026
+Date/Time: 09-09-2026 03:00:12 AM
+================================================

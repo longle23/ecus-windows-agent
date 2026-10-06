@@ -1,0 +1,64 @@
+===SHEET Sheet1===
+1	THÔNG TIN CHUNG - TỜ KHAI HÀNG HÓA XUẤT KHẨU	
+3	THÔNG TIN TỜ KHAI	
+4	Số tờ khai	
+5	STT	
+6	Số tờ khai đầu tiên	—
+7	Mã loại hình	B11 - Xuất kinh doanh
+8	Cơ quan Hải quan	47NF - Hải quan Thống Nhất
+9	Mã bộ phận xử lý tờ khai	00
+10	Mã hiệu phương thức vận chuyển	3
+11	Ngày khai báo (dự kiến)	
+12	Ngày đăng ký	
+14	NGƯỜI XUẤT KHẨU	
+15	Mã	3603076036
+16	Tên	CÔNG TY TNHH MEN-CHUEN VIỆT NAM
+17	Mã bưu chính	+84
+18	Địa chỉ	Đường số 2, KCN Giang Điền, Xã An Viễn, Thành phố Đồng Nai, Việt Nam
+19	Điện thoại	02518966868
+21	NGƯỜI ỦY THÁC XUẤT KHẨU	
+22	Mã	—
+23	Tên	—
+25	NGƯỜI NHẬP KHẨU	
+26	Mã	—
+27	Tên	SPORTS CITY INTERNATIONAL INC.
+28	Mã bưu chính	—
+29	Địa chỉ	11F., NO.585, RUIGUANG RD., NEIHU DIST., TAIPEI CITY, TAIWAN
+30	Mã nước	KH - CAMBOD
+31	Mã người khai Hải quan	—
+33	VẬN ĐƠN	
+34	Số vận đơn	122600044830159
+35	Số lượng kiện	22 RO
+36	Tổng trọng lượng hàng (Gross)	196.58 KGM
+37	Địa điểm lưu kho hàng chờ thông quan dự kiến	47NFCNF - CCHQ THONG NHAT DN
+38	Địa điểm nhận hàng cuối cùng	KHPNH - PHNOMPENH
+39	Địa điểm xếp hàng	
+40	Phương tiện vận chuyển dự kiến	XE TAI
+41	Ngày hàng đi dự kiến	29/07/2026
+42	Ký hiệu và số hiệu	
+44	THÔNG TIN HỢP ĐỒNG	
+45	Số hợp đồng	MDSVN-SCI-ST/HDMB/2026
+46	Ngày hợp đồng	01/01/2026
+47	Ngày hết hạn	—
+49	THÔNG TIN HÓA ĐƠN	
+50	Phân loại hình thức hóa đơn	A
+51	Số hóa đơn	MCVB-071626-12
+52	Ngày phát hành	25/07/2026
+53	Phương thức thanh toán	KC
+54	Mã phân loại giá hóa đơn	A
+55	Điều kiện giá hóa đơn	EXW
+56	Tổng trị giá hóa đơn	
+57	Trị giá tính thuế	
+58	Mã đồng tiền của hóa đơn	USD
+59	Mã đồng tiền trị giá tính thuế	USD
+60	Tổng hệ số phân bổ trị giá tính thuế	
+62	THÔNG TIN VẬN CHUYỂN	
+63	Ngày khởi hành vận chuyển	27/07/2026
+64	Địa điểm đích cho vận chuyển bảo thuế	
+65	Ngày đến / Ngày khởi hành (vận chuyển bảo thuế)	27/07/2026
+67	THÔNG TIN KHÁC	
+68	Phần ghi chú	CNEE:SPORTEX INDUSTRY CO., LTD.
+69	Số quản lý của nội bộ doanh nghiệp	—
+70	Số quản lý người sử dụng	
+71	Tổng số trang của tờ khai	
+72	Tổng số dòng hàng của tờ khai	

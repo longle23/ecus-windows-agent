@@ -1,0 +1,66 @@
+sheets: Sheet1
+
+=== Sheet1 ===
+001| THÔNG TIN CHUNG - TỜ KHAI HÀNG HÓA XUẤT KHẨU || 
+003| THÔNG TIN TỜ KHAI || 
+004| Số tờ khai || 
+005| STT || 
+006| Số tờ khai đầu tiên || —
+007| Mã loại hình || B11 - Xuất kinh doanh
+008| Cơ quan Hải quan || 47NF - Hải quan Thống Nhất
+009| Mã bộ phận xử lý tờ khai || 00
+010| Mã hiệu phương thức vận chuyển || 3
+011| Ngày khai báo (dự kiến) || 
+012| Ngày đăng ký || 
+014| NGƯỜI XUẤT KHẨU || 
+015| Mã || 3603076036
+016| Tên || CÔNG TY TNHH MEN-CHUEN VIỆT NAM
+017| Mã bưu chính || +84
+018| Địa chỉ || Đường số 2, KCN Giang Điền, Xã An Viễn, Thành phố Đồng Nai, Việt Nam
+019| Điện thoại || 02518966868
+021| NGƯỜI ỦY THÁC XUẤT KHẨU || 
+022| Mã || —
+023| Tên || —
+025| NGƯỜI NHẬP KHẨU || 
+026| Mã || —
+027| Tên || SPORTS CITY INTERNATIONAL INC.
+028| Mã bưu chính || —
+029| Địa chỉ || 11F., NO.585, RUIGUANG RD., NEIHU DIST., TAIPEI CITY, TAIWAN
+030| Mã nước || KH - CAMBOD
+031| Mã người khai Hải quan || —
+033| VẬN ĐƠN || 
+034| Số vận đơn || 122600044830159
+035| Số lượng kiện || 22 RO
+036| Tổng trọng lượng hàng (Gross) || 196.58 KGM
+037| Địa điểm lưu kho hàng chờ thông quan dự kiến || 47NFCNF - CCHQ THONG NHAT DN
+038| Địa điểm nhận hàng cuối cùng || KHPNH - PHNOMPENH
+039| Địa điểm xếp hàng || 
+040| Phương tiện vận chuyển dự kiến || XE TAI
+041| Ngày hàng đi dự kiến || 29/07/2026
+042| Ký hiệu và số hiệu || 
+044| THÔNG TIN HỢP ĐỒNG || 
+045| Số hợp đồng || MDSVN-SCI-ST/HDMB/2026
+046| Ngày hợp đồng || 01/01/2026
+047| Ngày hết hạn || —
+049| THÔNG TIN HÓA ĐƠN || 
+050| Phân loại hình thức hóa đơn || A
+051| Số hóa đơn || MCVB-071626-12
+052| Ngày phát hành || 25/07/2026
+053| Phương thức thanh toán || KC
+054| Mã phân loại giá hóa đơn || A
+055| Điều kiện giá hóa đơn || EXW
+056| Tổng trị giá hóa đơn || 
+057| Trị giá tính thuế || 
+058| Mã đồng tiền của hóa đơn || USD
+059| Mã đồng tiền trị giá tính thuế || USD
+060| Tổng hệ số phân bổ trị giá tính thuế || 
+062| THÔNG TIN VẬN CHUYỂN || 
+063| Ngày khởi hành vận chuyển || 27/07/2026
+064| Địa điểm đích cho vận chuyển bảo thuế || 
+065| Ngày đến / Ngày khởi hành (vận chuyển bảo thuế) || 27/07/2026
+067| THÔNG TIN KHÁC || 
+068| Phần ghi chú || CNEE:SPORTEX INDUSTRY CO., LTD.
+069| Số quản lý của nội bộ doanh nghiệp || —
+070| Số quản lý người sử dụng || 
+071| Tổng số trang của tờ khai || 
+072| Tổng số dòng hàng của tờ khai || 
