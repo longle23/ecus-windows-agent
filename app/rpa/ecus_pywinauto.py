@@ -34,6 +34,10 @@ _IDENTITY_NOTICE_RE = re.compile(
     re.IGNORECASE,
 )
 _NOTICE_TITLE_RE = re.compile(r"thông\s*báo|warning|confirm|xác\s*nhận", re.IGNORECASE)
+_GOODS_MODAL_RE = re.compile(r"hàng\s*tờ\s*khai|frmVNACCS_HANGEDA", re.IGNORECASE)
+_PREPARE_HOME_TIMEOUT_SEC = 8.0
+# Always present on the ECUS home splash. Closing the declaration does not remove them.
+_HOME_CHROME_IDS = frozenset({"frmShowTabBar", "frmBKGround"})
 
 
 def classify_notice_body(body: str, *, blocking: bool = False) -> str:
@@ -103,7 +107,7 @@ class PywinautoEcusRpa:
             app = ui.connect_ecus(self.settings)
             main = ui.ensure_main_window(app, timeout=5.0)
             main.set_focus()
-            self._reject_if_export_form_open(app, main)
+            prepare_warnings = self._prepare_home_for_job(app, main)
             dlg = ui.ensure_export_form_ready(app, main)
             form_opened = True
             dlg.set_focus()
@@ -126,6 +130,7 @@ class PywinautoEcusRpa:
                 so_to_khai=so_to_khai,
                 hang_hoa_requested=requested,
                 hang_hoa_filled=filled,
+                warnings=prepare_warnings,
             )
         except (EcusFlowError, ui.EcusUiError) as exc:
             logger.warning("job %s failed: %s", job.jobId, exc)
@@ -168,22 +173,209 @@ class PywinautoEcusRpa:
                 warnings=warnings,
             )
 
-    def _reject_if_export_form_open(self, app, main) -> None:
+    def _prepare_home_for_job(self, app, main, *, timeout: float = _PREPARE_HOME_TIMEOUT_SEC) -> list[str]:
+        """Close leftover ECUS work windows so this job starts from the home screen.
+
+        Does not open a new declaration. A login window stops the job untouched.
+        Returns warnings for a successful job when a previous declaration was abandoned.
+        """
+        ui.reject_if_login(main)
+        if not self._home_blockers(app, main):
+            return []
+        logger.info("ECUS is not on the home screen; closing open windows before the job")
+        discarded = False
+        started = time.time()
+        while True:
+            discarded = self._close_prepare_pass(app, main) or discarded
+            blockers = self._home_blockers(app, main)
+            if not blockers:
+                if discarded:
+                    return ["closed a previous declaration without saving"]
+                return []
+            if time.time() - started >= timeout:
+                detail = "; ".join(blockers)
+                raise EcusFlowError(
+                    f"ECUS is not on the home screen: {detail}",
+                    filled=0,
+                    warnings=[detail],
+                )
+            time.sleep(0.25)
+
+    def _close_prepare_pass(self, app, main) -> bool:
+        """One top-down close pass. True when a previous declaration was abandoned."""
+        discarded = False
+        ui.dismiss_blocking_dialogs(main)
+        self._dismiss_error_dialogs_ok()
+        if self._click_unsaved_no():
+            discarded = True
+        if self._dismiss_other_prepare_notices():
+            discarded = True
+        ui.dismiss_code_lookup(main)
+        if self._close_goods_modal(main):
+            discarded = True
+            if self._click_unsaved_no():
+                discarded = True
+        for form in self._foreign_mdi_forms(main):
+            if self._click_btn_dong(form, log="clicked Đóng on other ECUS window"):
+                if self._click_unsaved_no():
+                    discarded = True
+        if ui.export_form_shell(main) is not None or self._export_form_is_open(app):
+            if self._click_form_dong(app, None):
+                discarded = True
+                if self._click_unsaved_no():
+                    discarded = True
+        return discarded
+
+    def _dismiss_other_prepare_notices(self) -> bool:
+        """Dismiss leftover notices without clicking Yes. True when No was clicked."""
+        discarded = False
+        for win, _title, body, blocking in list(self._iter_notice_windows()):
+            kind = classify_notice_body(body, blocking=blocking)
+            if kind in ("error", "unsaved", "pending"):
+                continue
+            if kind == "close_notice":
+                self._click_dialog_button(
+                    win,
+                    auto_ids={"btnDong", "cmdDong", "btnClose", "cmdClose"},
+                    names={"đóng", "dong"},
+                )
+            elif kind in ("keep_date", "yes_prompt"):
+                if self._click_dialog_button(win, auto_ids={"cmdNo", "btnNo", "7"}, names={"no", "không"}):
+                    logger.info("clicked No on prompt before job (%s)", kind)
+                    discarded = True
+            elif kind == "saved":
+                self._click_dialog_button(win, auto_ids={"cmdOK", "btnOK", "2"}, names={"ok"})
+        return discarded
+
+    def _close_goods_modal(self, main) -> bool:
+        win, _title = self._find_goods_modal(main)
+        if win is None:
+            return False
+        return self._click_btn_dong(win, log="clicked Đóng on goods line window")
+
+    def _find_goods_modal(self, main):
+        win, title, _app = ui.find_top_window_by_title(_GOODS_MODAL_RE, timeout=0.0)
+        if win is not None:
+            return win, title or ""
+        for child in self._iter_mdi_children(main):
+            aid = getattr(getattr(child, "element_info", None), "automation_id", "") or ""
+            try:
+                title = child.window_text() or ""
+            except Exception:
+                title = ""
+            if aid == "frmVNACCS_HANGEDA" or _GOODS_MODAL_RE.search(title):
+                return child, title
+        return None, ""
+
+    def _home_blockers(self, app, main) -> list[str]:
+        """Labels of windows that mean ECUS is not on the home splash. Empty means home."""
+        labels: list[str] = []
+        shell = ui.export_form_shell(main)
+        if shell is not None:
+            labels.append(self._window_label(shell))
+        elif self._export_form_is_open(app):
+            labels.append("frmVNACCS_EDA")
+        goods, goods_title = self._find_goods_modal(main)
+        if goods is not None:
+            labels.append(self._window_label(goods) or goods_title or "frmVNACCS_HANGEDA")
+        blocking = ui.find_blocking_dialog()
+        if blocking:
+            labels.append(blocking)
+        for _win, title, body, _blocking in self._iter_notice_windows():
+            snippet = " ".join((body or title).split())[:120]
+            if snippet:
+                labels.append(snippet)
+        for form in self._foreign_mdi_forms(main):
+            labels.append(self._window_label(form))
+        return list(dict.fromkeys(labels))
+
+    def _foreign_mdi_forms(self, main) -> list:
+        """MDI forms this job does not know how to drive. Home splash chrome is ignored.
+
+        frmShowTabBar and frmBKGround stay on screen after Đóng returns straight to
+        the home page with no save prompt. A pane with neither a Đóng button nor
+        input fields is the same kind of chrome.
+        """
+        found = []
+        for child in self._iter_mdi_children(main):
+            aid = getattr(getattr(child, "element_info", None), "automation_id", "") or ""
+            if aid in ("", "frmMain", "frmVNACCS_EDA", "frmVNACCS_HANGEDA") or aid in _HOME_CHROME_IDS:
+                continue
+            try:
+                title = child.window_text() or ""
+            except Exception:
+                title = ""
+            if ui.title_has_export_form(title) or _GOODS_MODAL_RE.search(title):
+                continue
+            if self._btn_dong(child) is None and not ui.form_has_input_fields(child):
+                continue
+            found.append(child)
+        return found
+
+    def _iter_mdi_children(self, main):
+        if main is None:
+            return
         try:
-            existing = ui.find_export_form(app, timeout=1.0, main=main)
-        except ui.EcusUiError:
+            children = list(main.children())
+        except Exception:
             return
-        if existing is None:
-            return
-        if getattr(existing.element_info, "automation_id", "") == "frmMain":
-            return
-        if not ui.form_has_input_fields(existing):
-            return
-        raise EcusFlowError(
-            "ECUS export form is already open. Close it before sending another job.",
-            filled=0,
-            warnings=["export form already open"],
-        )
+        for child in children:
+            class_name = getattr(getattr(child, "element_info", None), "class_name", "") or ""
+            if "MDICLIENT" in class_name:
+                try:
+                    nested = list(child.children())
+                except Exception:
+                    nested = []
+                for mdi_child in nested:
+                    yield mdi_child
+                continue
+            aid = getattr(getattr(child, "element_info", None), "automation_id", "") or ""
+            ctype = getattr(getattr(child, "element_info", None), "control_type", "") or ""
+            if aid and aid != "frmMain" and ctype in ("Window", "Pane"):
+                yield child
+
+    def _click_btn_dong(self, target, *, log: str) -> bool:
+        btn = self._btn_dong(target)
+        if btn is None:
+            return False
+        try:
+            btn.click_input()
+        except Exception as exc:  # noqa: BLE001
+            logger.debug("click Đóng failed: %s", exc)
+            return False
+        logger.info(log)
+        return True
+
+    def _btn_dong(self, target):
+        if target is None:
+            return None
+        try:
+            children = list(target.children())
+        except Exception:
+            return None
+        for child in children:
+            aid = getattr(getattr(child, "element_info", None), "automation_id", "") or ""
+            try:
+                txt = (child.window_text() or "").replace("&", "").strip().lower()
+            except Exception:
+                txt = ""
+            if aid not in ("btnDong", "cmdDong") and txt not in ("đóng", "dong"):
+                continue
+            if hasattr(child, "is_enabled") and not child.is_enabled():
+                continue
+            return child
+        return None
+
+    def _window_label(self, win) -> str:
+        info = getattr(win, "element_info", None)
+        aid = getattr(info, "automation_id", "") or ""
+        try:
+            title = (win.window_text() or "").strip()
+        except Exception:
+            title = ""
+        if aid and title:
+            return f"{aid} ({title})"
+        return aid or title or "unknown window"
 
     # ------------------------------------------------------------------ fill
     def _fill_thong_tin_chung(self, dlg, job: EcusJobRequest) -> None:
